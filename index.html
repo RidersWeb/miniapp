@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Фитнес клуб - Расписание</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            color: var(--tg-theme-text-color);
+            background: var(--tg-theme-bg-color);
+        }
+        .schedule-item {
+            border: 1px solid var(--tg-theme-hint-color);
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+        }
+        .book-button {
+            background: var(--tg-theme-button-color);
+            color: var(--tg-theme-button-text-color);
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h2>Расписание тренировок</h2>
+    <div id="schedule-container"></div>
+
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
+
+        // Пример данных расписания
+        const schedule = [
+            {
+                id: 1,
+                name: "Йога",
+                trainer: "Анна",
+                time: "10:00",
+                date: "2024-03-20"
+            },
+            {
+                id: 2,
+                name: "Кроссфит",
+                trainer: "Максим",
+                time: "12:00",
+                date: "2024-03-20"
+            }
+        ];
+
+        function renderSchedule() {
+            const container = document.getElementById('schedule-container');
+            schedule.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'schedule-item';
+                div.innerHTML = `
+                    <h3>${item.name}</h3>
+                    <p>Тренер: ${item.trainer}</p>
+                    <p>Время: ${item.time}</p>
+                    <p>Дата: ${item.date}</p>
+                    <button class="book-button" onclick="bookTraining(${item.id})">
+                        Записаться
+                    </button>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function bookTraining(trainingId) {
+            // Здесь должна быть логика для записи на тренировку
+            // Например, отправка данных на ваш сервер
+            tg.sendData(JSON.stringify({
+                action: 'book_training',
+                training_id: trainingId
+            }));
+        }
+
+        renderSchedule();
+    </script>
+</body>
+</html> 
